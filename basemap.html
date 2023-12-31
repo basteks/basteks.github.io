@@ -26,6 +26,7 @@
 </head>
 <body onload="initmap()">
 <div id="map" style="width: 100%; height: 100%;"></div>
+<script src="http://rowanwins.github.io/leaflet-easyPrint/dist/bundle.js"></script>
 <script>
 	function getParamValue(paramName)
 	{
@@ -68,6 +69,13 @@
 			}
 			vals[i] = {"villecp": villecp, "lat": lat, "lon": lon, "jeunes": jeunes};
 		}
+		var printer = L.easyPrint({
+      		tileLayer: tiles,
+      		sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+      		filename: 'myMap',
+      		exportOnly: true,
+      		hideControlContainer: true
+		}).addTo(map);
 		
 		for (let m=0;m<vals.length;m++) {
 			let mrk = vals[m];
