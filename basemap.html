@@ -91,7 +91,7 @@
 				 });
 			  navigator.geolocation.getCurrentPosition(function(position) {
 				  var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude);
-				var currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>b>");
+				var currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>");
 			  });
 			}
 		}
