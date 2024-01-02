@@ -57,7 +57,7 @@
 	function initmap() {
 		var title = getParamValue('t');
 		document.title = decodeURI(title);
-		var displayCurrentPos = getParamValue('p')=="true";
+		var displayCurrentPos = getParamValue('p');
 		var vals = getParamValue('mrks');
 		if (vals != "") {
 			vals = vals.split(";");
@@ -88,22 +88,39 @@
 			}
 			map.fitBounds(markersLatLng);
 		}
-		if (displayCurrentPos) {
+		if (displayCurrentPos != "no") {
 			if (navigator.geolocation) {
-				var redMarker = L.AwesomeMarkers.icon({
-					markerColor: 'red'
-				 });
-			  navigator.geolocation.getCurrentPosition(function(position) {
-				  var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude);
-				var currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>");
-			  });
-			}
+				var redMarker = L.AwesomeMarkers.icon({markerColor: 'red'});
+				switch (displayCurrentPos) {
+					case "track":
+						var currentPos = null;
+						function success(pos) {
+							var latlng = new L.LatLng(pos.coords.latitude, pos.coords.longitude);
+							if (currentPos == null) { currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>"); }
+							else { currentPos.setLatLng(latlng); }
+						}
+						function error(err) {
+							console.warn("ERROR(" + err.code + "): " + err.message);
+						}
+						var options = {
+						  enableHighAccuracy: false,
+						  timeout: 5000,
+						  maximumAge: 0,
+						};
+						id = navigator.geolocation.watchPosition(success, error, options);
+						break;
+					default:
+						navigator.geolocation.getCurrentPosition(function(position) {
+							var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude);
+							var currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>");
+						});
+						break;
+				}
+			} else { alert("Your browser doesn't support geolocation :("); }
 		}
-		/*const center = map.getCenter();
-		map.setZoom(map.getZoom()-1);
-		map.setView(center);*/
 	};
 </script>
+
 
 </body>
 </html>
