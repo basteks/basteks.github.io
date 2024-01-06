@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Airtable-cartography basemap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+</head>
+<body onload="initmap()">
+<div id="map" style="width: 100%; height: 100%;"></div>
+<script>
+	function getParamValue(paramName)
+	{
+		found=false;
+		var url = window.location.search.substring(1);
+		var qArray = url.split('?');
+		for (var i = 0; i < qArray.length; i++)
+		{
+			var pArr = qArray[i].split('=');
+			if (pArr[0] == paramName) {
+			found = true;
+			return pArr[1];
+			}
+		}
+		if (!found) {
+		return '';
+		}
+	}
+	const map = L.map('map').setView([51.505, -0.09], 13);
+	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+	var markersLatLng = [];
+	
+	function initmap() {
+		var title = getParamValue('t');
+		document.title = decodeURI(title);
+		var displayCurrentPos = getParamValue('p');
+		var vals = getParamValue('mrks');
+		if (vals != "") {
+			vals = vals.split(";");
+			for (let i = 0; i < vals.length; i++)
+			{
+				let valsLength = vals[i].split(',').length;
+				let title = decodeURI(vals[i].split(',')[0]);
+				let lat = Number(vals[i].split(',')[1]);
+				let lon = Number(vals[i].split(',')[2]);
+				let content = [];
+				for (let j=3;j<valsLength;j++) {
+					content.push(decodeURI(vals[i].split(',')[j]));
+				}
+				vals[i] = {"title": title, "lat": lat, "lon": lon, "content": content};
+			}
+			for (let m=0;m<vals.length;m++) {
+				let mrk = vals[m];
+				let contentList="";
+				if (mrk["content"].length>1 || mrk["content"].length==1 && mrk["content"][0]!="") {
+					contentList="<ul>";
+					for (let j=0;j<mrk["content"].length;j++) {
+						contentList += '<li>'+mrk["content"][j]+'</li>';
+					 }
+					 contentList+="</ul>";
+				 }
+				var marker = L.marker([mrk["lat"],mrk["lon"]]).addTo(map).bindPopup("<h1>"+mrk["title"]+"</h1>"+contentList);
+				markersLatLng.push(marker.getLatLng());
+			}
+			map.fitBounds(markersLatLng);
+		}
+		if (["","no"].indexOf(displayCurrentPos)==-1) {
+			if (navigator.geolocation) {
+				var redMarker = new L.Icon({
+				  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+				  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+				  iconSize: [25, 41],
+				  iconAnchor: [12, 41],
+				  popupAnchor: [1, -34],
+				  shadowSize: [41, 41]
+				});
+				switch (displayCurrentPos) {
+					case "track":
+						var currentPos = null;
+						function success(pos) {
+							var latlng = new L.LatLng(pos.coords.latitude, pos.coords.longitude);
+							if (currentPos == null) { currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>"); }
+							else { currentPos.setLatLng(latlng); }
+						}
+						function error(err) {
+							console.warn("ERROR(" + err.code + "): " + err.message);
+						}
+						var options = {
+						  enableHighAccuracy: false,
+						  timeout: 5000,
+						  maximumAge: 0,
+						};
+						id = navigator.geolocation.watchPosition(success, error, options);
+						break;
+					default:
+						navigator.geolocation.getCurrentPosition(function(position) {
+							var latlng = new L.LatLng(position.coords.latitude, position.coords.longitude);
+							var currentPos = L.marker(latlng, {icon: redMarker}).addTo(map).bindPopup("<b>Current location</b>");
+						});
+						break;
+				}
+			} else { alert("Your browser doesn't support geolocation :("); }
+		}
+	};
+</script>
+</body>
+</html>
