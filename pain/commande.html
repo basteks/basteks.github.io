@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>🍞 Commande de pain 🥖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="pain.css">
+</head>
+<body onload="initQuery()">
+<script src="pain_v3.js"></script>
+<h1 style="txt-align:center;">🍞 Commande de pain 🥖</h1>
+<br>
+<p id="notLogged" style="color: red; display:none;">Désolé, vous n'êtes pas référencé.e comme un.e membre, la commande est impossible.</p>
+<br><br>
+<form style="text-align:center;width:var(--main-width);" id="dateForm">
+	<label for="dateSelect">Date : </label>
+	<select id="dateSelect" autocomplete="off" form='dateForm' onchange="updateDate()" disabled>
+	    <option value="none" disabled selected>Choisir une date de commande</option>
+	</select>
+	
+</form>
+<br>
+<div id="dateComments">
+<p id="dummyComment" class="comment">&nbsp;</p>
+</div>
+<p id="timeLimit" hidden></p><br>
+
+<div id="acheteurSel" style="display:none;">
+    <label for="acheteurSelect">Acheteur.euse : </label>
+    <select id="acheteurSelect" autocomplete="off">
+		<option value="none" disabled selected>Choisir un.e acheteur.euse</option>
+    </select>
+</div>
+<div id="acheteurShow">
+<label for="acheteur">Acheteur.euse : </label>
+<span id="acheteur"></span>
+</div>
+
+<br><br>
+<div>
+    <table id="alreadyOrdered" style="width:var(--main-width); text-align:left;" class="disp">
+	<thead>
+	<tr>
+	    <th>Id commande</th>
+	    <th>Montant</th>
+	    <th>Récapitulatif commande</th>
+	    <th>Annuler commande</th>
+	</tr>
+	</thead>
+	<tbody id="alreadyOrderedBody">
+	</tbody>
+    </table>
+</div>
+
+<br><br>
+<div id="cart">
+    <div id="loader" class="loader"></div>
+    <div id="cartline" hidden>
+	<table style="width:var(--main-width);border-bottom:1px solid gray;padding-bottom:.5em;margin-bottom:.5em;">
+	  <tr id="3butprd" class="disp" style="width:100%">
+	      <td id="label3prd" style="width:82%">
+		</td>
+		<td class="3rd">
+		    <input type="button" value="-" style="width:100%; border-top-left-radius:8px;border-bottom-left-radius:8px;">
+		</td>
+		<td class="3rd">
+		    <input type="text" id="qtyprd" value=0>
+		</td>
+		<td class="3rd">
+		    <input type="button" value="+" style="width:100%;border-top-right-radius:8px;border-bottom-right-radius:8px">
+		</td>
+	  </tr>
+	  <tr id="1butprd" style="width:100%">
+	      <td id="label1prd" style="width:80%">
+		</td>
+		<td style="width:18%">
+		    <input type="button" value="Ajouter" style="width:100%;border-radius: 8px;">
+		</td>
+	  </tr>
+	</table>
+    </div>
+</div>
+<br>
+<div style="text-align:right;width:var(--main-width)">
+    <input type="checkbox" id="envoiRecap" name="envoiRecap"/>
+    <label for="envoiRecap">Récapitualtif par mail</label>
+    <br>&#128722; Votre panier : <span id="amout" style="margin-right:2em;">0.0€</span>
+    <input type="button" id="order" style="border-radius: 8px;pointer-events: none;background-color:#ccc" value="Commander" onclick="order()"></div>
+<p id='successResult'><div id="orderloader" class="loader disp"></div></p>
+</body>
+</html>
