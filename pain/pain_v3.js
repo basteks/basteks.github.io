@@ -31,7 +31,6 @@ async function init(res) {
 	  case 'acheteur':
 	    document.getElementById('acheteur').innerHTML = d.acheteur;
 	    admin = d.admin==true;
-	    console.log(admin);
 	    break;
 	  case 'acheteurs':
 	    acheteurs.push(d);
@@ -235,7 +234,7 @@ function order() {
 	let acheteur_id = '';
 	const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
-	if (document.getElementById('acheteurSelect')) {
+	if (document.getElementById('acheteurSelect') && document.getElementById('acheteurSelect').selectedOptions[0].value!="none") {
 	    acheteur_id = document.getElementById('acheteurSelect').selectedOptions[0].value;
 	}
 	else if (urlParams.has('id')) {
