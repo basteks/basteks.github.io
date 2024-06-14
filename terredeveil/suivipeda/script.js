@@ -39,7 +39,7 @@ function toggleNav() {
     document.getElementById('sidebarbutton').innerHTML = "&#9776; Menu"
   }
   if (bearer!=null) {
-      document.getElementById('sidebarbutton').innerHTML += '<span style="float:right; text-align:right;">Équipe péda<br><button onclick="logOff()">Déconnexion</button></span>';
+      document.getElementById('sidebarbutton').innerHTML += '<span style="float:right; text-align:right; font-size:0.85em;">Équipe péda<br><button onclick="logOff()">Déconnexion</button></span>';
   }
   else {
       document.getElementById('sidebarbutton').innerHTML += '<span style="float:right; text-align:right;"><span style="color:red">Non connecté</span><br><button onclick="login()">Connexion</button></span>';
@@ -55,7 +55,7 @@ function loadVars() {
     base_uuid = sessionStorage.getItem('base_uuid');
     server = sessionStorage.getItem('server');
     if (bearer!=null && base_uuid!=null && server!=null) {
-      document.getElementById('sidebarbutton').innerHTML += '<span style="float:right; text-align:right;">Équipe péda<br><button onclick="logOff()">Déconnexion</button></span>';
+      document.getElementById('sidebarbutton').innerHTML += '<span style="float:right; text-align:right; font-size:0.85em;">Équipe péda<br><button onclick="logOff()">Déconnexion</button></span>';
     }
     else {
       document.getElementById('sidebarbutton').innerHTML += '<span style="float:right; text-align:right;"><span style="color:red">Non connecté</span><br><button onclick="login()">Connexion</button></span>';
