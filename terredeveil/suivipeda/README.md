@@ -12,6 +12,7 @@ Elles sont au nombre de 517, réparties en différents domaines et différents c
 - Éventuellement la connaissance associée (lettre minuscule). En sa présence, on parle de connaissance (plusieurs connaissances composent la compétence)
 
 Ainsi, la connaissance `C2LO2a` appartient au **cycle 2** (`C2`), à la compétence 2 du domaine **Langage oral** (`LO2`) : *Dire pour être entendu et compris, en situation d’adresse à un auditoire ou de présentation de textes (lien avec la lecture)*, et il s'agit de la connaissance `a` : *Prendre en compte des récepteurs ou interlocuteurs*.
+
 C'est l'acquisition de ces compétences / connaissances que l'on cherche à mesurer à l'aide de cet outil.
 
 ### Les activités
@@ -71,10 +72,12 @@ Un suivi comporte obligatoirement :
 - Un nombre d'occurrences (de séances). Celui-ci permet de mutualiser des séries, par exemple "pendant une période de 5 semaines, tel·le·s jeune(s) suivront les activités a et b le lundi matin" > une saisie avec 5 occurrences.
 
 Ce système de saisie favorise une saisie "a priori" moins chronophage pour l'équipe pédagogique : en début de période, il est possible de saisir l'ensemble des séquences d'un planning "idéal" (aucune absence, aucune séquence annulée).
+
 Pour recaler cette saisie idéalisée avec la réalité, il y a possibiité, pour chaque suivi, de saisir des absences : en cliquant sur une séquence, un tableau apparait composé d'autant de lignes qu'il y avait d'occurrences saisies pour le suivi en question. Pour chaque ligne (chaque occurrence), il est possible de :
 - Cocher la case annulation : la séquence n'a pas eu lieu
 - Sélectionner un·e ou plusieurs jeunes absent·e·s
 - Désélectionner un·e ou plusieurs activités si celle(s)-ci n'a/ont pas eu lieu
 
 Il est également possible d'ajouter ou de supprimer des lignes selon les besoins. Seules les lignes sur lesquelles des modifications ont été effectuées seront prises en compte.
+
 Cela permet une grande flexibilité dans les saisies, comme par exemple ("telle élève a raté uniquement telle activité lors de la deuxième séance").
