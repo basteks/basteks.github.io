@@ -7,30 +7,36 @@ var domaines = [];
 let saisieEnCours = false;
 
 async function initnouvelleactivite() {
-  document.getElementById('submitbutton').disabled = true;
-  let expirationDate = localStorage.getItem("SeaTableExpirationDate");
-  if(new Date()>new Date(expirationDate)) {
-      console.log('Getting new token');
-      const tokenOptions = {
-	      method: 'GET',
-	      headers: {
-		    accept: 'application/json',
-		    authorization: 'Bearer ' + bearer
-	      }
-	    };
-	    
-      let tokenPromise = await fetch(server+'/api/v2.1/dtable/app-access-token/', tokenOptions)
-      .then(response => response.json())
-      .then(function(response) {
-	     fromBearer(response);
-      })
-      .catch(error => console.log(error));
-  }
-  else {
-    base_bearer = localStorage.getItem("SeaTableBearer");
-    listComps();
+  if (bearer) {
+      document.getElementById('submitbutton').disabled = true;
+      let expirationDate = localStorage.getItem("SeaTableExpirationDate");
+      if(new Date()>new Date(expirationDate)) {
+	  console.log('Getting new token');
+	  const tokenOptions = {
+		  method: 'GET',
+		  headers: {
+			accept: 'application/json',
+			authorization: 'Bearer ' + bearer
+		  }
+		};
+		
+	  let tokenPromise = await fetch(server+'/api/v2.1/dtable/app-access-token/', tokenOptions)
+	  .then(response => response.json())
+	  .then(function(response) {
+		 fromBearer(response);
+	  })
+	  .catch(error => console.log(error));
+      }
+      else {
+	base_bearer = localStorage.getItem("SeaTableBearer");
+	listComps();
+      }
   }
 };
+
+function updateContent() {
+    document.getElementById('text').value = document.getElementsByClassName('ql-editor')[0].innerHTML;
+}
 
 async function fromBearer(resp) {
   base_bearer = resp.access_token;
@@ -79,7 +85,6 @@ async function fromComp(resp) {
 		await document.getElementById('domaine').appendChild(opt);
       }
       document.getElementById('loader').classList.add('disp');
-      //console.log(competences);
 }
 
 function auto_modif() {
@@ -113,7 +118,7 @@ function auto_complete() {
 	    }
 	}
     }
-    //console.log(connaissance);
+
     if ((lastInput.length>1 || document.getElementById('cycle').selectedIndex>0 || document.getElementById('domaine').selectedIndex>0 ) && valid.length>0) {
 	if (connaissance) {
 	    document.getElementById('validHeaders').innerHTML = '<th>Identifiant</th><th>Domaine</th><th>Cycle</th><th>Intitulé compétence</th><th>Connaissances et compétences associées<span style="float:right;"><button type="button" class="cancel" onclick="closeForm()">X</button></span></th>';
@@ -291,10 +296,6 @@ async function fromSend(response) {
       .catch(err => console.error(err));
 }
 
-/*var bearer = '0b258ddc84e2cac58aa1b4ded87e7603a23d0d95';
-var base_uuid = '5525bc4f-5e02-4f19-8c23-6a8d4a0533fb';
-var server = 'https://cloud.seatable.io';*/
-
 async function send() {
   document.getElementById('loader').classList.remove('disp');
   document.getElementById('submitbutton').disabled = true;
@@ -311,7 +312,7 @@ async function send() {
 	Catégorie: document.getElementById('categorie').value,
 	Module: document.getElementById('module').value,
 	Intitulé: document.getElementById('intitule').value,
-	Déroulé: document.querySelector('[contenteditable]').innerText,
+	Déroulé: turndownService.turndown(document.getElementById('text').value), //document.querySelector('[contenteditable]').innerText,
 	SousTitre: document.getElementById('subtitle').value
     }, 
     table_name: 'Activités'
