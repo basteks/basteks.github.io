@@ -55,8 +55,11 @@
 				
 				<fieldset>
 					<legend>Déroulé (facultatif)</legend>
-					<label for="deroule">Rédigé en syntaxe Markdown (<a href="https://www.markdownguide.org/cheat-sheet/#basic-syntax" target="blank">Consultez ce lien pour de l'aide</a>)</label>
-					<div id="editor" style="margin-bottom: 10px; min-height:50px; border: 1px solid black; font-weight: normal;" contenteditable></div>
+					<label for="deroule">Rédigé en syntaxe Markdown</label><!-- (<a href="https://www.markdownguide.org/cheat-sheet/#basic-syntax" target="blank">Consultez ce lien pour de l'aide</a>)</label>
+					<div id="editor" style="margin-bottom: 10px; min-height:50px; border: 1px solid black; font-weight: normal;" contenteditable></div>-->
+					<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+					<div id="editor" style="height:200px;" onkeyup="updateContent()"></div>
+					<input type="hidden" id="text" value="">
 				</fieldset>
 				
 				<fieldset style="margin-top: 10px;">
@@ -107,5 +110,14 @@
 			<p id='successResult'></p>
 		</div>
 	</div>
+	<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+	<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
+
+	<script>
+	  const quill = new Quill('#editor', {theme: 'snow'});
+	  const turndownService = new TurndownService();
+	  const converter = new showdown.Converter();
+	</script>
 </body>
 </html>
