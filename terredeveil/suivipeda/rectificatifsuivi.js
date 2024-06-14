@@ -1,8 +1,6 @@
 var compFilled = false;
 var base_bearer = '';
 let suivis = [];
-//let activites = [];
-//let jeunes = [];
 let data = [];
 let buttonsJeunesId = [];
 let occurrences = [];
@@ -11,31 +9,32 @@ spreadsheet = null;
 let success = 0;
 let modifsOccurrences = [];
 let rows = [];
-//let origId = "";
 
 async function initnouveaurectificatif() {
-  document.getElementById('submitbutton').disabled = true;  
-  let expirationDate = localStorage.getItem("SeaTableExpirationDate");
-  if(new Date()>new Date(expirationDate)) {
-      console.log('Getting new token');
-      const tokenOptions = {
-	      method: 'GET',
-	      headers: {
-		    accept: 'application/json',
-		    authorization: 'Bearer ' + bearer
-	      }
-	    };
-	    
-      let tokenPromise = await fetch(server+'/api/v2.1/dtable/app-access-token/', tokenOptions)
-      .then(response => response.json())
-      .then(function(response) {
-	     fromBearer(response);
-      })
-      .catch(error => console.log(error));
-  }
-  else {
-    base_bearer = localStorage.getItem("SeaTableBearer");
-    listSuivis();
+  if (bearer) {
+      document.getElementById('submitbutton').disabled = true;  
+      let expirationDate = localStorage.getItem("SeaTableExpirationDate");
+      if(new Date()>new Date(expirationDate)) {
+	  console.log('Getting new token');
+	  const tokenOptions = {
+		  method: 'GET',
+		  headers: {
+			accept: 'application/json',
+			authorization: 'Bearer ' + bearer
+		  }
+		};
+		
+	  let tokenPromise = await fetch(server+'/api/v2.1/dtable/app-access-token/', tokenOptions)
+	  .then(response => response.json())
+	  .then(function(response) {
+		 fromBearer(response);
+	  })
+	  .catch(error => console.log(error));
+      }
+      else {
+	base_bearer = localStorage.getItem("SeaTableBearer");
+	listSuivis();
+      }
   }
 };
 
@@ -229,10 +228,6 @@ function delRow() {
 	}
     }
 }
-
-/*var bearer = '80efc82852faa465af9906247b0747807e4ff8f9'; //'0b258ddc84e2cac58aa1b4ded87e7603a23d0d95';
-var base_uuid = 'dced314a-11cf-44ea-ad57-d07569156583'; //'5525bc4f-5e02-4f19-8c23-6a8d4a0533fb';
-var server = 'https://cloud.seatable.io';*/
 
 async function appendSuivi(occ) {
     let options = {
