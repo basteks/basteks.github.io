@@ -4,7 +4,7 @@ Bienvenue dans la présentation de l'outil de suivi des compétences pédagogiqu
 ## Fonctionnement général
 Il est important de comprendre le fonctionnement général de ce système de suivi. Celui-ci se base sur quatre types de données :
 
-### Les compétences (ou connaissance, cf. ci-dessous) du socle commun. 
+### Les compétences (ou connaissance, cf. ci-dessous) du socle commun
 Elles sont au nombre de 517, réparties en différents domaines et différents cycles. Chaque compétence possède un identifiant unique composé comme suit :
 
 - Le cycle
