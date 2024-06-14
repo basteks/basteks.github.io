@@ -11,14 +11,14 @@ Elles sont au nombre de 517, réparties en différents domaines et différents c
 - La compétence (elle-même composée du domaine et d'un numéro)
 - Éventuellement la connaissance associée (lettre minuscule). En sa présence, on parle de connaissance (plusieurs connaissances composent la compétence)
 
-Ainsi, la connaissance `C2LO2a` appartient au cycle 2 (`C2`), à la compétence 2 du domaine *Langage oral* (`LO2`) : "Dire pour être entendu et compris, en situation d’adresse à un auditoire ou de présentation de textes (lien avec la lecture)", et il s'agit de la connaissance `a` : "Prendre en compte des récepteurs ou interlocuteurs".
+Ainsi, la connaissance `C2LO2a` appartient au **cycle 2** (`C2`), à la compétence 2 du domaine **Langage oral** (`LO2`) : *"Dire pour être entendu et compris, en situation d’adresse à un auditoire ou de présentation de textes (lien avec la lecture)"*, et il s'agit de la connaissance `a` : *"Prendre en compte des récepteurs ou interlocuteurs"*.
 C'est l'acquisition de ces compétences / connaissances que l'on cherche à mesurer à l'aide de cet outil.
 
 ### Les activités
 Une activité est liée à plusieurs compétences / connaissances. Elle est éventuellement classée par matière, catégorie et/ou module et un déroulé peut être proposé.
 
 ### Les jeunes
-On cherche à évaluer l'acquisition des compétences / connaissances pour chaque jeune individuellement. Chaque jeune à "évaluer est donc présent·e dans l'outil.
+On cherche à évaluer l'acquisition des compétences / connaissances pour chaque jeune individuellement. Chaque jeune à évaluer est donc présent·e dans l'outil.
 
 ### Les suivis
 Un suivi permet d'attribuer une ou plusieurs "occurrences de travail" d'une ou plusieurs compétences à un·e ou plusieurs jeunes selon la logique suivante : un suivi associe une ou plusieurs activités (une séquence) avec un·e ou plusieurs jeunes, chaque activité étant elle-même liée à une ou plusieurs compétences (par exemple "durant telle séquence composée des activités a et b, le/la/les jeune(s) concerné·e·s ont travaillé la/les compétence(s) de l'activité a et la/les compétence(s) de l'activité b").
