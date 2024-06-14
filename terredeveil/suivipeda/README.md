@@ -11,7 +11,7 @@ Elles sont au nombre de 517, réparties en différents domaines et différents c
 - La compétence (elle-même composée du domaine et d'un numéro)
 - Éventuellement la connaissance associée (lettre minuscule). En sa présence, on parle de connaissance (plusieurs connaissances composent la compétence)
 
-Ainsi, la connaissance `C2LO2a` appartient au **cycle 2** (`C2`), à la compétence 2 du domaine **Langage oral** (`LO2`) : *"Dire pour être entendu et compris, en situation d’adresse à un auditoire ou de présentation de textes (lien avec la lecture)"*, et il s'agit de la connaissance `a` : *"Prendre en compte des récepteurs ou interlocuteurs"*.
+Ainsi, la connaissance `C2LO2a` appartient au **cycle 2** (`C2`), à la compétence 2 du domaine **Langage oral** (`LO2`) : *Dire pour être entendu et compris, en situation d’adresse à un auditoire ou de présentation de textes (lien avec la lecture)*, et il s'agit de la connaissance `a` : *Prendre en compte des récepteurs ou interlocuteurs*.
 C'est l'acquisition de ces compétences / connaissances que l'on cherche à mesurer à l'aide de cet outil.
 
 ### Les activités
