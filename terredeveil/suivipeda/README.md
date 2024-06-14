@@ -24,8 +24,9 @@ On cherche à évaluer l'acquisition des compétences / connaissances pour chaqu
 Un suivi permet d'attribuer une ou plusieurs "occurrences de travail" d'une ou plusieurs compétences à un·e ou plusieurs jeunes selon la logique suivante : un suivi associe une ou plusieurs activités (une séquence) avec un·e ou plusieurs jeunes, chaque activité étant elle-même liée à une ou plusieurs compétences (par exemple "durant telle séquence composée des activités a et b, le/la/les jeune(s) concerné·e·s ont travaillé la/les compétence(s) de l'activité a et la/les compétence(s) de l'activité b").
 
 ## Prise en main
-Maintenant que nous avons vu le principe général, nous allons nous intéresser à la façon de réaliser les différentes opérations nécessaires dans l'interface
-Différentes "rubriques" sont présentes dans le menu latéral, à savoir :
+Maintenant que nous avons vu le principe général, nous allons nous intéresser à la façon de réaliser les différentes opérations nécessaires dans l'interface.
+
+Cliquez sur ☰ Menu ci-dessus pour ouvrir le volet de navigation. Différentes "rubriques" sont présentes dans ce menu latéral, à savoir :
 
 - Jeunes
 - Activités
