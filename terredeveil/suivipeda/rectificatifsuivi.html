@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Suivi péda - </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="styleformulaire.css">
+	<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+	<script src="https://jsuites.net/v4/jsuites.js"></script>
+	<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+	<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+</head>
+<body>
+	<script src="script.js"></script>
+	<script src="rectificatifsuivi.js"></script>
+	<script>
+		document.body.onload=function(){
+		init('Modification des suivis');
+		initnouveaurectificatif();
+		}
+	</script>
+    <div id="mySidenav" class="sidenav">
+    </div>
+    <div id="main">
+		<span id="sidebarbutton" class="closed" style="cursor:pointer" onclick="toggleNav()">&#9776; Menu</span><h2 id='pageTitle' style="display:inline; margin-left: 10px;"></h2>
+		<div style="width:60%; margin-top: 20px; margin-left: auto; margin-right:auto; border-top: 20px solid #4caf50; border-radius: 6px;">
+			<h2 style="padding-left: 30px;">Modification des suivis</h2>
+			<hr>
+			<div id="loader" class="loader"></div>
+			<label for="spreadsheet">Choisir un suivi</label>
+			<div id="spreadsheet"></div>
+			<div id="modif" class="disp">
+				<table id="occurrences" style="width: 100%; text-align:center;">
+					<thead>
+						<tr>
+							<th><button type="button" onclick="addRow()">Ajouter une ligne</button></th>
+							<th><button type="button" onclick="delRow()">Supprimer la/les ligne(s) sélectionnée(s)</button></th>
+							<th colspan="3">Vous pouvez ajouter ou supprimer des lignes selon les besoins, mais il faut garder à l'espirt que seules les lignes pour lesquelles un ou plusieurs jeunes sont sélectionné.e.s seront prises en compte<br>(lorsque la case Annulation est cochée, tous.tes les jeunes sont sélectionné.e.s automatiquement pour cette ligne)</th>
+						</tr>
+						<tr>
+							<th>Select.</th>
+							<th>Trim.</th>
+							<th>Annulation</th>
+							<th>Absences</th>
+							<th>Activités</th>
+						</tr>
+					</thead>
+					<tbody id="occurrencesBody">
+					</tbody>
+				</table>
+			</div>
+			<div style="width:100%; text-align:center;">
+				<input type="button" id="submitbutton" onclick="send()" value="Enregistrer les modifications">
+			</div>
+			<p id='successResult'></p>
+		</div>
+	</div>
+</body>
+</html>

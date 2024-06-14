@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suivi péda - </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="script.js"></script>
+    <script>
+	document.body.onload=function() {
+	    init('Liste des absences / annulations');
+	    document.getElementById('container').src="";
+	    let data = new FormData();
+	    data.append('request','listing');
+	    data.append('page','absences');
+	    data.append('bearer',bearer);
+	    fetch("https://vps-25355c52.vps.ovh.net:6231/webhook/cdfcda55-c818-454e-bab4-cdfe96b43ff9", {
+	      method: "POST",
+	      body: data
+	    }).then(response=> response.json())
+	      .then(function(data) {
+		  if (data.success=="true") {
+		      document.getElementById('container').src = data.URL;
+		  }
+	    });
+	}
+    </script>
+    <div id="mySidenav" class="sidenav">
+    </div>
+    <div id="main">
+	<span id="sidebarbutton" class="closed" style="cursor:pointer" onclick="toggleNav()">&#9776; Menu</span><h2 id='pageTitle' style="display:inline; margin-left: 10px;"></h2>
+	<iframe id="container"></iframe>
+    </div>
+</body>
+</html>

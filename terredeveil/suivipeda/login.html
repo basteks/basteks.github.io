@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suivi péda - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href='https://symbl-world.akamaized.net/i/webp/7b/13d9d7d642bfc3bd35ce5b2e6c4138.webp'>
+</head>
+<body style="background-color:#ccc">
+    <div style="width:400px;margin-left:auto;margin-right:auto;margin-top:100px;">
+	<div style="width:100%; margin-top: 20px; margin-left: auto; margin-right:auto; border-top: 20px solid #4caf50; border-radius: 6px;"></div>
+	<form id="login" style="width:100%;margin-top:-5px;padding-top:20px;background-color:#fff">
+	    <table style="width:80%;margin-left:auto;margin-right:auto;padding-bottom:20px;">
+		<tr>
+		    <td style="text-align:right;width:150px;"><img src="https://symbl-world.akamaized.net/i/webp/7b/13d9d7d642bfc3bd35ce5b2e6c4138.webp" width="60px" style="margin-right:15px"></td>
+		    <td><b>Suivi d'acquisition<br>des compétences pédagogiques</b></td>
+		</tr>
+		<tr>
+		    <td style="width: 150px;"><label for="username">Nom d'utilisateur </label></td><td><input type="texte" id="username"></td>
+		</tr>
+		<tr>
+		    <td style="width: 150px;"><label for="pwd">Mot de passe </label></td><td><input type="password" id="pwd"></td>
+		</tr>
+		<tr>
+		    <td></td>
+		    <td colspan=2 style="width: 150px;padding-top:10px;"><input id="sendButton" class="button" type="button" value="Envoyer" onclick="login()"></td>
+		<tr>
+	    </table>
+	</form>
+    </div>
+    <script>
+	function login() { 
+	    let data = new FormData();
+	    data.append('request','login');
+	    data.append('id',document.getElementById('username').value);
+	    data.append('pwd',document.getElementById('pwd').value);
+	    fetch("https://vps-25355c52.vps.ovh.net:6231/webhook/cdfcda55-c818-454e-bab4-cdfe96b43ff9", {
+	      method: "POST",
+	      body: data
+	    }).then(response=> response.json())
+	      .then(function(data) {
+		  if (data.success=="true") {
+		      sessionStorage.setItem('bearer',data.bearer);
+		      sessionStorage.setItem('base_uuid',data.base_uuid);
+		      sessionStorage.setItem('server',data.server);
+		      window.location.href = 'index.html';
+		  }
+	    });
+	}
+    </script>
+</body>
+</html> 

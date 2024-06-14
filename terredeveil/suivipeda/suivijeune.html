@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Suivi péda - </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="styleformulaire.css">
+	<script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+	<script src="https://jsuites.net/v4/jsuites.js"></script>
+	<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+	<link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+</head>
+<body onload="init()">
+	<script src="script.js"></script>
+	<script src="suivijeune.js"></script>
+	<script>
+		document.body.onload=function(){
+		init('Suivi des acquisitions jeune');
+		initsuivijeune();
+		}
+	</script>
+	<div id="mySidenav" class="sidenav">
+    </div>
+    <div id="main">
+		<span id="sidebarbutton" class="closed" style="cursor:pointer" onclick="toggleNav()">&#9776; Menu</span><h2 id='pageTitle' style="display:inline; margin-left: 10px;"></h2>
+		<div style="width:60%; margin-top: 20px; margin-left: auto; margin-right:auto; border-top: 20px solid #4caf50; border-radius: 6px;">
+			<h2 style="padding-left: 30px;">Suivi jeune</h2>
+			<hr>
+			<div id="loader" class="loader"></div>
+			<form name="myform">
+				<fieldset>
+					<table style="width:100%">
+						<tr>
+							<td>
+								<label for="jeune">Jeune :</label>
+								<select name="jeune" id="jeune" onchange="select_jeune()" disabled>
+								  <option value="none" disabled>Choisir un.e jeune</option>
+								</select>
+							</td>
+							<td>
+								<label for="vue">Vue :</label>
+								<select name="vue" id="vue" onchange="change_vue()">
+								  <option value="all">Toutes les compétences</option>
+								  <option value="occur">Compétences avec occurrences seulement</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="cycle">Cycle :</label>
+								<select name="cycle" id="cycle" disabled autocomplete="off" onchange="change_vue()">
+								  <option value="none">Tous</option>
+								  <option value="C1">C1</option>
+								  <option value="C2">C2</option>
+								  <option value="C3">C3</option>
+								  <option value="C4">C4</option>
+								</select>
+							</td>
+							<td>
+								<label for="domaine">Domaine :</label>
+								<select name="domaine" id="domaine" disabled autocomplete="off" onchange="change_vue()">
+								  <option value="none">Tous</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset>
+					<span id="dernierbilan"></span><br>
+					<label for="eval">Évaluation du/de la jeune</label> <!--, rédigée en syntaxe Markdown (<a href="https://www.markdownguide.org/cheat-sheet/#basic-syntax" target="blank">Consultez ce lien pour de l'aide</a>)</label>-->
+					<!--<div id="eval" style="margin-bottom: 10px; min-height:50px; border: 1px solid black; font-weight: normal;" contenteditable></div>-->
+					<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+					<div id="editor" style="height:200px;" onkeyup="updateContent()"></div>
+					<input type="hidden" id="text" value="">
+				</fieldset>
+			</form>
+			<div id="spreadsheet"></div>
+			<div style="width:100%; text-align:center;">
+				<input type="button" id="submitbutton" value="Enregistrer les acquis" onclick="send()" style="color: white; font-weight: bold;">
+				<input type="button" id="transferbutton" value="Transfert vers les années précédentes" onclick="transfert()" style="color: white; font-weight: bold;">
+			</div>
+			<p id='successResult'></p>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+	<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
+
+	<script>
+	  const quill = new Quill('#editor', {theme: 'snow'});
+	  const turndownService = new TurndownService();
+	  const converter = new showdown.Converter();
+	</script>
+</body>
+</html>

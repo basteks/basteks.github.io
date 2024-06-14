@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Suivi péda - </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="styleformulaire.css">
+</head>
+<body>
+	<script src="script.js"></script>
+	<script src="nouvelleactivite.js"></script>
+	<script>
+		document.body.onload=function(){
+		init('Saisie d¤une nouvelle activité');
+		initnouvelleactivite();
+		}
+	</script>
+    <div id="mySidenav" class="sidenav">
+    </div>
+    <div id="main">
+		<span id="sidebarbutton" class="closed" style="cursor:pointer" onclick="toggleNav()">&#9776; Menu</span><h2 id='pageTitle' style="display:inline; margin-left: 10px;"></h2>
+		<div style="width:60%; margin-top: 20px; margin-left: auto; margin-right:auto; border-top: 20px solid #4caf50; border-radius: 6px;">
+			<h2 style="padding-left: 30px;">Nouvelle activité</h2>
+			<hr>
+			<form name="myform">
+				<fieldset>
+					<legend>Matière (facultatif)</legend>
+					<label for="matiere">Français, Maths, etc.</label>
+					<input type="text" name="matiere" id="matiere" style="width:100%;"></input>
+				</fieldset>
+				
+				<fieldset>
+					<legend>Catégorie (facultatif)</legend>
+					<label for="categorie">Par exemple&nbsp;<i>je lis / j'écris</i></label>
+					<input type="text" name="categorie" id="categorie" style="width:100%;"></input>
+				</fieldset>
+				
+				<fieldset>
+					<legend>Module (facultatif)</legend>
+					<label for="module">Par exemple&nbsp;<i>Module 1</i></label>
+					<input type="text" name="module" id="module" style="width:100%;"></input>
+				</fieldset>
+				
+				<fieldset>
+					<legend>Intitulé <span style="color:red;">*</span></legend>
+					<label for="intitule">Par exemple&nbsp;<i>3 textes à lire</i></label>
+					<input type="text" name="intitule" id="intitule" style="width: 100%;" required onKeyup="checkform()"></input>
+				</fieldset>
+				
+				<fieldset>
+					<legend>Sous-titre</legend>
+					<label for="subtitle">De &nbsp;<i>+ nom de l'auteur</i></label>
+					<input type="text" name="subtitle" id="subtitle" style="width: 100%;" required onKeyup="checkform()"></input>
+				</fieldset>
+				
+				<fieldset>
+					<legend>Déroulé (facultatif)</legend>
+					<label for="deroule">Rédigé en syntaxe Markdown (<a href="https://www.markdownguide.org/cheat-sheet/#basic-syntax" target="blank">Consultez ce lien pour de l'aide</a>)</label>
+					<div id="editor" style="margin-bottom: 10px; min-height:50px; border: 1px solid black; font-weight: normal;" contenteditable></div>
+				</fieldset>
+				
+				<fieldset style="margin-top: 10px;">
+					<legend>Compétences <span style="color:red;">*</span> : Copier-coller ici la liste des compétences (identifiants séparés par des virgules)</legend>
+					<label for="competences">(Par exemple C4EDL1a, C3NC2c, etc.)</label>
+					<table>
+						<tr>
+							<td>
+								<label for="cycle">Cycle :</label>
+								<select name="cycle" id="cycle" onchange="auto_complete()">
+								  <option value="none">Tous</option>
+								  <option value="C1">C1</option>
+								  <option value="C2">C2</option>
+								  <option value="C3">C3</option>
+								  <option value="C4">C4</option>
+								</select>
+							</td>
+							<td>
+								<label for="domaine">Domaine :</label>
+								<select name="domaine" id="domaine" onchange="auto_complete()">
+								  <option value="none">Tous</option>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<input type="text" name="competences" id="competences" style="width:100%;" oninput="auto_modif()" autocomplete=off></input><br>
+					<div class="form-popup" id="compPopup">
+					  <table ><!--</table>class="form-container">-->
+						<thead id="validHeaders">
+							<th>Identifiant</th>
+							<th>Domaine</th>
+							<th>Cycle</th>
+							<th>Intitulé compétence</th>
+							<th>Connaissances et compétences associées <span style="float:right;"><button type="button" class="cancel" onclick="closeForm()">X</button></span></th>
+						</thead>
+						<tbody id="validComps">
+						</tbody>
+					  </table>
+					</div>
+					<input type="button" value="Lier avec les compétences de la base" onclick="check_competences()">
+				</fieldset>
+			</form>
+			<p id="compres"></p>
+			<p id="comperror"></p>
+			<p id="dummy" style="min-height:200px; max-height:200px;"></p>
+			<div id="loader" class="loader"></div>
+			<div style="width:100%; text-align:center;"><input type="button" id="submitbutton" value="Envoyer" onclick="send()" style="color: white; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;<input class="disp" type="button" id="reload" value="Nouvelle saisie" onclick="window.location.reload()" style="color: white; font-weight: bold;"></div>
+			<p id='successResult'></p>
+		</div>
+	</div>
+</body>
+</html>
