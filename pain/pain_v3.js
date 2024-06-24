@@ -2,7 +2,7 @@ let admin = false;
 async function initQuery() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    if (urlParams.has('id')) {
+    if (urlParams.has('id') && urlParams.get('id')!="") {
 	document.getElementById('notLogged').style.display='none';
 	const id = urlParams.get('id');
 	let data = new FormData();
