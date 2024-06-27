@@ -8,14 +8,12 @@ let jeune = null;
 let saisieEnCours = false;
 let data = [];
 var domaines = [];
+let toGenerate = false;
 spreadsheet = null;
 
 async function initsuivijeune() {
   if (bearer) {
-      document.getElementById('submitbutton').disabled = true;
-      document.getElementById('transferbutton').disabled = true;
-      document.getElementById('cycle').disabled = true;
-      document.getElementById('domaine').disabled = true;
+      setInputState(false);
       let expirationDate = localStorage.getItem("SeaTableExpirationDate");
       if(new Date()>new Date(expirationDate)) {
 	  console.log('Getting new token');
@@ -49,6 +47,31 @@ async function fromBearer(resp) {
   localStorage.setItem("SeaTableBearer",base_bearer);
   listJeunes();
 };
+
+async function updateJeune(id) {
+    const options = {
+      method: 'GET',
+      headers: {
+	    accept: 'application/json',
+	    authorization: 'Bearer '+base_bearer
+      }
+      };
+  await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/'+id+'/?table_name=Jeunes&view_name=Default%20View', options)
+  .then(response => response.json())
+  .then(function(response) {
+	 for (let j=0;j<jeunes.length;j++) {
+	     if (response._id == jeunes[j].id) {
+		 jeunes[j].lastupdate = response['Mise à jour compétences'];
+		 jeunes[j].appreciation = response['Appréciation'];
+		 jeunes[j].bilan = response['Dernier bilan'];
+		 break;
+	     }
+	 }
+	 setInputState(false);
+	 select_jeune();
+  })
+  .catch(err => console.error(err));
+}
 
 async function listJeunes() {
     const options = {
@@ -106,15 +129,11 @@ async function fromComp(resp) {
 		opt.innerHTML = domaines[i];//.split(" : ")[1];
 		await document.getElementById('domaine').appendChild(opt);
       }
-      document.getElementById('loader').classList.add('disp');
+      setInputState(true);
 }
 
 async function select_jeune() {
-    document.getElementById('loader').classList.remove('disp');
-    document.getElementById('submitbutton').disabled = false;
-    document.getElementById('submitbutton').style.backgroundColor = '#4caf50'; 
-    document.getElementById('transferbutton').disabled = false;
-    document.getElementById('transferbutton').style.backgroundColor = '#4caf50'; 
+    setInputState(false);
     const options = {
       method: 'GET',
       headers: {
@@ -126,7 +145,12 @@ async function select_jeune() {
   for (let j=0;j<jeunes.length;j++) {
       if (document.getElementById('jeune').options[document.getElementById('jeune').selectedIndex].value == jeunes[j].id) {
 	  jeune = jeunes[j];
-	  document.getElementById('dateupdatecompetences').innerHTML = 'Date de dernière mise à jour des compétences : '+new Date(jeunes[j].lastupdate).toLocaleDateString() +'<span style="float:right"><input type="button" id="submitbutton" value="Mettre à jour" onclick="updateComps()" style="color: white; font-weight: bold;">';
+	  if (jeunes[j].lastupdate==null) {
+	      document.getElementById('dateupdatecompetences').innerHTML = '<b>Mettez impérativement à jour les compétences en cliquant sur ce bouton !</b>&nbsp;&nbsp;&nbsp;<span><input type="button" id="updatecompsbutton" value="Mettre à jour" onclick="updateComps()" style="color: white; font-weight: bold;">';
+	  }
+	  else {
+	    document.getElementById('dateupdatecompetences').innerHTML = 'Date de dernière mise à jour des compétences : '+new Date(jeunes[j].lastupdate).toLocaleDateString() +'&nbsp;&nbsp;&nbsp;<span><input type="button" id="updatecompsbutton" value="Mettre à jour" onclick="updateComps()" style="color: white; font-weight: bold;">';
+	  }
 	  if (jeunes[j].bilan != null) {
 	      document.getElementById('dernierbilan').innerHTML = 'Date du dernier bilan : '+new Date(jeunes[j].bilan).toLocaleDateString();
 	  }
@@ -195,6 +219,40 @@ function wrapText(text,lim=25) {
       }
   }
   return txt;
+}
+
+function updateComps() {
+    setInputState(false);
+    let data = new FormData();
+    data.append('request','update_comps');
+    data.append('id',document.getElementById('jeune').selectedOptions[0].value);
+    fetch("https://vps-25355c52.vps.ovh.net:6231/webhook/cdfcda55-c818-454e-bab4-cdfe96b43ff9", {
+      method: "POST",
+      body: data
+    }).then(response=> response.json())
+      .then(function(data) {
+	  if (data.success=="true") {
+	      updateJeune(document.getElementById('jeune').selectedOptions[0].value);
+	  }
+    });
+}
+
+function setInputState(state) {
+    if (state) { 
+	document.getElementById('loaderup').classList.add('disp');
+	document.getElementById('loaderbottom').classList.add('disp'); 
+    }
+    else { 
+	document.getElementById('loaderup').classList.remove('disp');
+	document.getElementById('loaderbottom').classList.remove('disp');
+    }
+    document.querySelectorAll("input").forEach((element) => element.disabled=!state);
+    document.querySelectorAll("select").forEach((element) => element.disabled=!state);
+}
+
+function generate() {
+    toGenerate = true;
+    send();
 }
 
 var changed = function(instance, cell, x, y, value) {
@@ -268,7 +326,7 @@ function change_vue() {
     else {
 	spreadsheet.setData(data);
     }
-    document.getElementById('loader').classList.add('disp');
+    setInputState(true);
 }
 
 async function transfert() {
@@ -345,6 +403,7 @@ function updateContent() {
 }
 
 async function send() {
+ setInputState(false);
  var success = true;
  if (jeune != null) {
 	const options = {
@@ -375,8 +434,27 @@ async function send() {
 
 async function final(response) {
     if (response) {
-	document.getElementById('successResult').innerHTML='<b>Les données du/de la jeune ont été transférées correctement !</b>';
-	window.scrollTo(0, document.body.scrollHeight);
+	if (!toGenerate) { 
+	    document.getElementById('successResult').innerHTML='<b>Les données du/de la jeune ont été transférées correctement !</b>';
+	    window.scrollTo(0, document.body.scrollHeight);
+	    setInputState(true);
+	}
+	else {
+	    let data = new FormData();
+	    data.append('request','generate');
+	    data.append('id',document.getElementById('jeune').selectedOptions[0].value);
+	    fetch("https://vps-25355c52.vps.ovh.net:6231/webhook/cdfcda55-c818-454e-bab4-cdfe96b43ff9", {
+	      method: "POST",
+	      body: data
+	    }).then(response => response.arrayBuffer())
+	      .then(function(response) {
+		var blob = new Blob([response], {type: "application/pdf"});
+		var objectUrl = URL.createObjectURL(blob);
+		window.open(objectUrl);
+		setInputState(true);
+		toGenerate = false;
+	    });
+	}
     }
 }
 
@@ -386,7 +464,6 @@ async function fromSend(response) {
 	for (let c=0;c<competences.length;c++) {
 	    updates.push({'row_id': competences[c].id, 'row':{'acquis': competences[c].acquis}})
 	}
-	console.log(updates);
 	const options = {
 	      method: 'PUT',
 	      headers: {
