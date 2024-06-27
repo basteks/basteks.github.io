@@ -68,7 +68,7 @@ async function listJeunes() {
 
 async function fromJeunes(resp) {
     for(let i=0;i<resp.rows.length;i++) {
-	    await jeunes.push({"id" : resp.rows[i]._id, "nom": resp.rows[i].Nom, "bilan": resp.rows[i]['Dernier bilan'], "appreciation": resp.rows[i]['Appréciation']});
+	    await jeunes.push({"id" : resp.rows[i]._id, "nom": resp.rows[i].Nom, "bilan": resp.rows[i]['Dernier bilan'], "appreciation": resp.rows[i]['Appréciation'], "lastupdate": resp.rows[i]['Mise à jour compétences']});
       }
       for(let i=0;i<jeunes.length;i++) {
 		var opt = document.createElement('option');
@@ -126,6 +126,7 @@ async function select_jeune() {
   for (let j=0;j<jeunes.length;j++) {
       if (document.getElementById('jeune').options[document.getElementById('jeune').selectedIndex].value == jeunes[j].id) {
 	  jeune = jeunes[j];
+	  document.getElementById('dateupdatecompetences').innerHTML = 'Date de dernière mise à jour des compétences : '+new Date(jeunes[j].lastupdate).toLocaleDateString() +'<span style="float:right"><input type="button" id="submitbutton" value="Mettre à jour" onclick="updateComps()" style="color: white; font-weight: bold;">';
 	  if (jeunes[j].bilan != null) {
 	      document.getElementById('dernierbilan').innerHTML = 'Date du dernier bilan : '+new Date(jeunes[j].bilan).toLocaleDateString();
 	  }
@@ -202,6 +203,7 @@ var changed = function(instance, cell, x, y, value) {
 	for (let c=0;c<competences.length;c++) {
 	    if (competences[c].identifiant == compName) {
 		competences[c].acquis = spreadsheet.getValueFromCoords(x,y);
+		console.log(c);
 		break;
 	    }
 	}
@@ -212,7 +214,7 @@ var changed = function(instance, cell, x, y, value) {
 	    }
 	}
     }
-    if (spreadsheet.getHeader(x) == "1er trim") {
+    /*if (spreadsheet.getHeader(x) == "1er trim") {
 	for (let c=0;c<competences.length;c++) {
 	    if (competences[c].identifiant == compName) {
 		competences[c].trim1 = spreadsheet.getValueFromCoords(x,y);
@@ -225,7 +227,7 @@ var changed = function(instance, cell, x, y, value) {
 		break;
 	    }
 	}
-    }
+    }*/
 }
 
 function change_vue() {
@@ -253,7 +255,7 @@ function change_vue() {
 		{ type: 'text', title:'Id conn.', 'name': 'id_connaissance', readOnly:true, width:18 },
 		{ type: 'text', title:'Connaissances et compétences associées', 'name': 'connaissance', readOnly:true, wrap: true, width:255 },
 		{ type: 'text', title:'Années préc.', 'name': 'prec', readOnly:true, width:90 },
-		{ type: 'numeric', title:'1er trim', 'name': 'trim1', width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
+		{ type: 'numeric', title:'1er trim', 'name': 'trim1', readOnly:true, width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
 		{ type: 'numeric', title:'2è trim', 'name': 'trim2', readOnly:true, width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
 		{ type: 'numeric', title:'3è trim', 'name': 'trim3', readOnly:true, width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
 		{ type: 'checkbox', title:'ACQ', 'name': 'acquis', width:40 },
@@ -384,6 +386,7 @@ async function fromSend(response) {
 	for (let c=0;c<competences.length;c++) {
 	    updates.push({'row_id': competences[c].id, 'row':{'acquis': competences[c].acquis}})
 	}
+	console.log(updates);
 	const options = {
 	      method: 'PUT',
 	      headers: {
@@ -393,7 +396,7 @@ async function fromSend(response) {
 	      },
 	      body: JSON.stringify({
 		updates: updates,
-		table_name: 'Compétences_'+jeune.nom.replaceAll(" ",""),
+		table_name: 'Compétences_'+jeune.nom.replaceAll(" ","").replaceAll("-","").replace("/",""),
 	      })
 	};
 
