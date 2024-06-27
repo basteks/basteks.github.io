@@ -26,7 +26,7 @@
 		<div style="width:60%; margin-top: 20px; margin-left: auto; margin-right:auto; border-top: 20px solid #4caf50; border-radius: 6px;">
 			<h2 style="padding-left: 30px;">Suivi jeune</h2>
 			<hr>
-			<div id="loader" class="loader"></div>
+			<div id="loaderup" class="loader"></div>
 			<form name="myform">
 				<fieldset>
 					<table style="width:100%">
@@ -67,19 +67,21 @@
 				</fieldset>
 				<fieldset>
 					<span id="dateupdatecompetences"></span><br>
-					<span id="dernierbilan"></span><br>
-					<label for="eval">Évaluation du/de la jeune</label> <!--, rédigée en syntaxe Markdown (<a href="https://www.markdownguide.org/cheat-sheet/#basic-syntax" target="blank">Consultez ce lien pour de l'aide</a>)</label>-->
-					<!--<div id="eval" style="margin-bottom: 10px; min-height:50px; border: 1px solid black; font-weight: normal;" contenteditable></div>-->
+					<span id="dernierbilan"></span><br><br>
+					<h3>Évaluation générale du/de la jeune</h3><br>
 					<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 					<div id="editor" style="height:200px;" onkeyup="updateContent()"></div>
 					<input type="hidden" id="text" value="">
 				</fieldset>
 			</form>
+			<br><h3>Suivi d'acquisition des compétences</h3><br>
 			<div id="spreadsheet"></div>
 			<div style="width:100%; text-align:center;">
 				<input type="button" id="submitbutton" value="Enregistrer les acquis" onclick="send()" style="color: white; font-weight: bold;">
-				<input type="button" id="transferbutton" value="Transfert vers les années précédentes" onclick="transfert()" style="color: white; font-weight: bold;">
+				<input type="button" id="transferbutton" value="Transfert vers les années précédentes" onclick="transfert()" style="color: white; font-weight: bold;"><br>
+				<input type="button" id="generatebutton" value="Générer le rapport de suivi" onclick="generate()" style="color: white; font-weight: bold;">
 			</div>
+			<div id="loaderbottom" class="loader"></div>
 			<p id='successResult'></p>
 		</div>
 	</div>
