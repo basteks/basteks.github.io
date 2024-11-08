@@ -55,10 +55,10 @@ async function listSuivis() {
 	'content-type': 'application/json',
 	authorization: 'Bearer '+base_bearer
       },
-      body: JSON.stringify({convert_keys: true, sql: 'select * from Suivi where Occurrences>=0'})
+      body: JSON.stringify({convert_keys: true, sql: 'select * from PEDA_Suivis where Occurrences>=0'})
   };
 
-  await fetch('https://cloud.seatable.io/dtable-db/api/v1/query/'+base_uuid+'/', options)
+  await fetch(server+'/dtable-db/api/v1/query/'+base_uuid+'/', options)
   .then(response => response.json())
   .then(function(response) {
 	 fromSuivis(response);
@@ -241,7 +241,7 @@ async function appendSuivi(occ) {
     };
     console.log('createRow');
     console.log(options);
-    await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/', options)
+    await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/', options)
       .then(response => response.json())
       .then(function(response) {
 	     fromSend(response,occ);
@@ -301,7 +301,7 @@ async function final(response) {
 	      })
 	    };
 
-	    await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options)
+	    await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options)
 	      .then(response => response.json())
 	      .then(function(response) {
 		     final(response);
@@ -330,7 +330,7 @@ async function fromSend(response,occ) {
 	authorization: 'Bearer ' + base_bearer
       },
       body: JSON.stringify({
-	table_name: 'Suivi',
+	table_name: 'PEDA_Suivis',
 	other_table_name: 'Jeunes',
 	link_id: '2FR9',
 	row_id: origId,
@@ -339,7 +339,7 @@ async function fromSend(response,occ) {
     };
     console.log('linkUsers');
     console.log(options);
-    await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options)
+    await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options)
       .then(response => response.json())
       .then(function(response) {
 	      fromLinkJeunes(response,origId,occ);
@@ -362,8 +362,8 @@ async function fromLinkJeunes(response,origId,occ) {
 	authorization: 'Bearer ' + base_bearer
       },
       body: JSON.stringify({
-	table_name: 'Suivi',
-	other_table_name: 'Activités',
+	table_name: 'PEDA_Suivis',
+	other_table_name: 'PEDA_Activites',
 	link_id: 'KJ79',
 	row_id: origId,
 	other_rows_ids: activites
@@ -371,7 +371,7 @@ async function fromLinkJeunes(response,origId,occ) {
     };
     console.log('linkActivities');
     console.log(options);
-    await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options)
+    await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options)
       .then(response => response.json())
       .then(function(response) {
 	     final(response);

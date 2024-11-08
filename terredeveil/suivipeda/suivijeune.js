@@ -56,14 +56,14 @@ async function updateJeune(id) {
 	    authorization: 'Bearer '+base_bearer
       }
       };
-  await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/'+id+'/?table_name=Jeunes&view_name=Default%20View', options)
+  await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/'+id+'/?table_name=Jeunes&view_name=Suivi%20Peda', options)
   .then(response => response.json())
   .then(function(response) {
 	 for (let j=0;j<jeunes.length;j++) {
 	     if (response._id == jeunes[j].id) {
-		 jeunes[j].lastupdate = response['Mise à jour compétences'];
-		 jeunes[j].appreciation = response['Appréciation'];
-		 jeunes[j].bilan = response['Dernier bilan'];
+		 jeunes[j].lastupdate = response['MaJCompetences'];
+		 jeunes[j].appreciation = response['Appreciation'];
+		 jeunes[j].bilan = response['DernierBilan'];
 		 break;
 	     }
 	 }
@@ -81,7 +81,7 @@ async function listJeunes() {
 	    authorization: 'Bearer '+base_bearer
       }
       };
-  await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=Jeunes&view_name=Default%20View', options)
+  await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=Jeunes&view_name=Suivi%20Peda', options)
   .then(response => response.json())
   .then(function(response) {
 	 fromJeunes(response);
@@ -91,7 +91,7 @@ async function listJeunes() {
 
 async function fromJeunes(resp) {
     for(let i=0;i<resp.rows.length;i++) {
-	    await jeunes.push({"id" : resp.rows[i]._id, "nom": resp.rows[i].Nom, "bilan": resp.rows[i]['Dernier bilan'], "appreciation": resp.rows[i]['Appréciation'], "lastupdate": resp.rows[i]['Mise à jour compétences']});
+	    await jeunes.push({"id" : resp.rows[i]._id, "nom": resp.rows[i].Nom, "bilan": resp.rows[i]['DernierBilan'], "appreciation": resp.rows[i]['Appreciation'], "lastupdate": resp.rows[i]['MaJCompetences']});
       }
       for(let i=0;i<jeunes.length;i++) {
 		var opt = document.createElement('option');
@@ -108,7 +108,7 @@ async function fromJeunes(resp) {
 		authorization: 'Bearer '+base_bearer
 	  }
 	  };
-      await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=Comp%C3%A9tences&view_name=Listing', options)
+      await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=PEDA_Competences&view_name=Listing', options)
       .then(response => response.json())
       .then(function(response) {
 	     fromComp(response);
@@ -169,7 +169,7 @@ async function select_jeune() {
   }
   document.getElementById('cycle').disabled = false;
   document.getElementById('domaine').disabled = false;
-  await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=Comp%C3%A9tences_'+encodeURI(nomJeuneTable)+'&view_name=Toutes%20les%20comp%C3%A9tences', options)
+  await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=PEDA_Competences_'+encodeURI(nomJeuneTable)+'&view_name=Toutes%20les%20comp%C3%A9tences', options)
   .then(response => response.json())
   .then(function(response) {
 	 fromJeuneComps(response);
@@ -385,11 +385,11 @@ async function transfert() {
 	  },
 	  body: JSON.stringify({
 	    updates: updates,
-	    table_name: 'Compétences_'+jeune.nom.replaceAll(" ","")
+	    table_name: 'PEDA_Competences_'+jeune.nom.replaceAll(" ","")
 	  })
 	};
 
-	let transfertResponse = await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/batch-update-rows/', options)
+	let transfertResponse = await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/batch-update-rows/', options)
 	  .then(response => response.json())
 	  .then(function(response) {
 		 final(response);
@@ -415,15 +415,15 @@ async function send() {
 	  },
 	  body: JSON.stringify({
 	    row: {
-		'Dernier bilan': new Date(),
-		'Appréciation': turndownService.turndown(document.getElementById('text').value) //document.getElementById('eval').innerText
+		'DernierBilan': new Date(),
+		'Appreciation': turndownService.turndown(document.getElementById('text').value) //document.getElementById('eval').innerText
 	    },
 	    table_name: 'Jeunes',
 	    row_id: jeune.id
 	  })
 	};
 
-	fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/', options)
+	fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/', options)
 	  .then(response => response.json())
 	  .then(function(response) {
 		 fromSend(response);
@@ -473,11 +473,11 @@ async function fromSend(response) {
 	      },
 	      body: JSON.stringify({
 		updates: updates,
-		table_name: 'Compétences_'+jeune.nom.replaceAll(" ","").replaceAll("-","").replace("/",""),
+		table_name: 'PEDA_Competences_'+jeune.nom.replaceAll(" ","").replaceAll("-","").replace("/",""),
 	      })
 	};
 
-	let transfertResponse = await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/batch-update-rows/', options)
+	let transfertResponse = await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/batch-update-rows/', options)
 	  .then(response => response.json())
 	  .then(function(response) {
 		 final(response);

@@ -55,7 +55,7 @@ async function listComps() {
 	    authorization: 'Bearer '+base_bearer
       }
       };
-  await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=Comp%C3%A9tences&view_name=Listing', options)
+  await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/?table_name=PEDA_Competences&view_name=Listing', options)
   .then(response => response.json())
   .then(function(response) {
 	 fromComp(response);
@@ -281,14 +281,14 @@ async function fromSend(response) {
       },
       body: JSON.stringify({
 	link_id: '5LpD',
-	table_name: 'Activités',
-	other_table_name: 'Compétences',
+	table_name: 'PEDA_Activites',
+	other_table_name: 'PEDA_Competences',
 	row_id: origId,
 	other_rows_ids: ids
       })
     };
 
-    let linkResponse = await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options2)
+    let linkResponse = await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/links/', options2)
       .then(response => response.json())
       .then(function(response) {
 	     fromLink(response);
@@ -315,10 +315,10 @@ async function send() {
 	Déroulé: turndownService.turndown(document.getElementById('text').value), //document.querySelector('[contenteditable]').innerText,
 	SousTitre: document.getElementById('subtitle').value
     }, 
-    table_name: 'Activités'
+    table_name: 'PEDA_Activites'
   })
 };
-  let rowResponse = await fetch('https://cloud.seatable.io/dtable-server/api/v1/dtables/'+base_uuid+'/rows/', options)
+  let rowResponse = await fetch(server+'/dtable-server/api/v1/dtables/'+base_uuid+'/rows/', options)
   .then(response => response.json())
   .then(function(response) {
  	 fromSend(response);
