@@ -16,11 +16,13 @@
 	<select id="dateSelect" autocomplete="off" form='dateForm' onchange="updateDate()" disabled>
 	    <option value="none" disabled selected>Choisir une date de commande</option>
 	</select>
-	
 </form>
-<br>
 <div id="dateComments">
 <p id="dummyComment" class="comment">&nbsp;</p>
+</div>
+<br>
+<div id="recupComments">
+<p id="dummyRecup" class="recup">&nbsp;</p>
 </div>
 <p id="timeLimit" hidden></p><br>
 
@@ -37,6 +39,12 @@
 
 <br><br>
 <div>
+    <div style="width:var(--main-width);">
+    <label id="viewswitchlabel" class="switch" style="float:right;" title="Page de commande">
+      <input id="viewswitch" type="checkbox" onchange="toggleView()" disabled>
+      <span class="slider round"></span>
+    </label>
+    </div>
     <table id="alreadyOrdered" style="width:var(--main-width); text-align:left;" class="disp">
 	<thead>
 	<tr>
@@ -83,7 +91,7 @@
 <div style="text-align:right;width:var(--main-width)">
     <input type="checkbox" id="envoiRecap" name="envoiRecap"/>
     <label for="envoiRecap">Récapitualtif par mail</label>
-    <br>&#128722; Votre panier : <span id="amout" style="margin-right:2em;">0.0€</span>
+    <br>&#128722; Votre panier : <span id="amount" style="margin-right:2em;">0.0€</span>
     <input type="button" id="order" style="border-radius: 8px;pointer-events: none;background-color:#ccc" value="Commander" onclick="order()"></div>
 <p id='successResult'><div id="orderloader" class="loader disp"></div></p>
 </body>
