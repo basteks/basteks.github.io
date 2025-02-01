@@ -869,6 +869,7 @@ function submit(evt) {
 	      if (data.success == true) {
 		  let formData = new FormData();
 		  //jSuites.loading.hide();
+		  eventID = data._id;
 		  formData.append('_id', data._id);
 		  formData.append('action','getlinkconvention');
 		  fetch("https://vps-25355c52.vps.ovh.net:6231/webhook/dff9c55e-6d4b-4710-93eb-041f383b01c8", {
@@ -943,7 +944,7 @@ function init(evt) {
     }
     update(null,'intro');
     let data = new FormData();
-    if (urlParams.has('sign')) {
+   /* if (urlParams.has('sign')) {
 	document.getElementById('btn_sign').style.display = 'block';
 	document.getElementById('btn_intro').style.display = 'none';
 	document.getElementById('btn_newcomer').style.display = 'none';
@@ -968,7 +969,7 @@ function init(evt) {
 	      jSuites.loading.hide();
 	});
 	 
-    } else {
+    } else {*/
     data.append('action','getsallesinfos');
     fetch("https://vps-25355c52.vps.ovh.net:6231/webhook/dff9c55e-6d4b-4710-93eb-041f383b01c8", {
       method: "POST",
@@ -1071,6 +1072,5 @@ function init(evt) {
 	  jSuites.loading.hide();
       }
     });
-   }
+   //}
 }
-
