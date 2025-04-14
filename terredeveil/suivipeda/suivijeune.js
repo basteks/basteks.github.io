@@ -333,9 +333,9 @@ function change_vue() {
 		{ type: 'text', title:'Id conn.', 'name': 'id_connaissance', readOnly:true, width:18 },
 		{ type: 'text', title:'Connaissances et compétences associées', 'name': 'connaissance', readOnly:true, wrap: true, width:255 },
 		{ type: 'text', title:'Années préc.', 'name': 'prec', readOnly:true, width:90 },
-		{ type: 'numeric', title:'1er trim', 'name': 'trim1', width:100, mask:'0' }, //readOnly:true, width:40 }
-		{ type: 'numeric', title:'2è trim', 'name': 'trim2', width:100, mask:'0' },
-		{ type: 'numeric', title:'3è trim', 'name': 'trim3', width:100, mask:'0' },
+		{ type: 'numeric', title:'1er trim', 'name': 'trim1', width:40, mask:'0' }, //readOnly:true, width:40 }
+		{ type: 'numeric', title:'2è trim', 'name': 'trim2', width:40, mask:'0' },
+		{ type: 'numeric', title:'3è trim', 'name': 'trim3', width:40, mask:'0' },
 		{ type: 'checkbox', title:'ACQ', 'name': 'acquis', width:40 },
 	     ],
 	    filters: true,
