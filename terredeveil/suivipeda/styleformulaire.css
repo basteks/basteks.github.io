@@ -3,18 +3,23 @@ body {
 	line-height: 1.5;
 	font-size: 14px;
 }
-label {
+label:not([for="cycleaimprimer"]) {
 	background-color : #f9f9f9;
 	color: #b1b1b1;
 	padding :10px;
 	margin: 5px 0;
 	display: flex;
 }
+
+label[for="cycleaimprimer"].selected {
+    font-weight: bold;
+}
+
 fieldset {
 	margin-top: 15px;
 	border : none;
 }
-input {
+input:not(input[type="checkbox"]) {
   margin: .5rem 0;
   height : 2.5rem;
   border : 1px solid #e0e5ec;
