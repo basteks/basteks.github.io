@@ -10,6 +10,7 @@ let data = [];
 var domaines = [];
 let toGenerate = false;
 spreadsheet = null;
+let cyclesAImprimer = [];
 
 async function initsuivijeune() {
   if (bearer) {
@@ -145,12 +146,12 @@ async function select_jeune() {
   for (let j=0;j<jeunes.length;j++) {
       if (document.getElementById('jeune').options[document.getElementById('jeune').selectedIndex].value == jeunes[j].id) {
 	  jeune = jeunes[j];
-	  if (jeunes[j].lastupdate==null) {
+	  /*if (jeunes[j].lastupdate==null) {
 	      document.getElementById('dateupdatecompetences').innerHTML = '<b>Mettez impérativement à jour les compétences en cliquant sur ce bouton !</b>&nbsp;&nbsp;&nbsp;<span><input type="button" id="updatecompsbutton" value="Mettre à jour" onclick="updateComps()" style="color: white; font-weight: bold;">';
 	  }
 	  else {
 	    document.getElementById('dateupdatecompetences').innerHTML = 'Date de dernière mise à jour des compétences : '+new Date(jeunes[j].lastupdate).toLocaleDateString() +'&nbsp;&nbsp;&nbsp;<span><input type="button" id="updatecompsbutton" value="Mettre à jour" onclick="updateComps()" style="color: white; font-weight: bold;">';
-	  }
+	  }*/
 	  if (jeunes[j].bilan != null) {
 	      document.getElementById('dernierbilan').innerHTML = 'Date du dernier bilan : '+new Date(jeunes[j].bilan).toLocaleDateString();
 	  }
@@ -159,6 +160,7 @@ async function select_jeune() {
 	  }
 	  if (jeunes[j].appreciation != null) {
 	      document.getElementsByClassName('ql-editor')[0].innerHTML = converter.makeHtml(jeunes[j].appreciation);
+	      updateContent();
 	  }
 	  else {
 	      document.getElementsByClassName('ql-editor')[0].innerHTML = '';
@@ -250,9 +252,27 @@ function setInputState(state) {
     document.querySelectorAll("select").forEach((element) => element.disabled=!state);
 }
 
+function getCheckedCheckboxesFor(checkboxName) {
+    var checkboxes = document.querySelectorAll('input[name="' + checkboxName + '"]:checked'), values = [];
+    Array.prototype.forEach.call(checkboxes, function(el) {
+        values.push(el.value);
+    });
+    return values;
+}
+
 function generate() {
-    toGenerate = true;
-    send();
+    document.getElementById('successResult').innerHTML = "";
+    cyclesAImprimer = getCheckedCheckboxesFor('cycleaimprimer');
+	if (cyclesAImprimer.length>0) {
+	toGenerate = true;
+	send();
+    } else {
+	document.getElementById('successResult').innerHTML="Veuillez sélectionner <b>au moins un cycle ci-dessus</b> dont les compétences acquises/en cours d'acquisition seront affichées dans le rapport";
+    }
+}
+
+function toggleLabel(evt) {
+    document.getElementById('label'+evt.target.value).classList.toggle('selected');
 }
 
 var changed = function(instance, cell, x, y, value) {
@@ -272,7 +292,7 @@ var changed = function(instance, cell, x, y, value) {
 	    }
 	}
     }
-    /*if (spreadsheet.getHeader(x) == "1er trim") {
+    if (spreadsheet.getHeader(x) == "1er trim") {
 	for (let c=0;c<competences.length;c++) {
 	    if (competences[c].identifiant == compName) {
 		competences[c].trim1 = spreadsheet.getValueFromCoords(x,y);
@@ -285,7 +305,7 @@ var changed = function(instance, cell, x, y, value) {
 		break;
 	    }
 	}
-    }*/
+    }
 }
 
 function change_vue() {
@@ -313,12 +333,14 @@ function change_vue() {
 		{ type: 'text', title:'Id conn.', 'name': 'id_connaissance', readOnly:true, width:18 },
 		{ type: 'text', title:'Connaissances et compétences associées', 'name': 'connaissance', readOnly:true, wrap: true, width:255 },
 		{ type: 'text', title:'Années préc.', 'name': 'prec', readOnly:true, width:90 },
-		{ type: 'numeric', title:'1er trim', 'name': 'trim1', readOnly:true, width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
-		{ type: 'numeric', title:'2è trim', 'name': 'trim2', readOnly:true, width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
-		{ type: 'numeric', title:'3è trim', 'name': 'trim3', readOnly:true, width:40 },//, width:100, mask:'$ #.##,00', decimal:',' },
+		{ type: 'numeric', title:'1er trim', 'name': 'trim1', width:100, mask:'0' }, //readOnly:true, width:40 }
+		{ type: 'numeric', title:'2è trim', 'name': 'trim2', width:100, mask:'0' },
+		{ type: 'numeric', title:'3è trim', 'name': 'trim3', width:100, mask:'0' },
 		{ type: 'checkbox', title:'ACQ', 'name': 'acquis', width:40 },
 	     ],
 	    filters: true,
+	    allowInsertRow: false,
+	    allowDeleteRow: false,
 	    onchange: changed,
 	});
 	spreadsheet.hideIndex();
@@ -416,7 +438,8 @@ async function send() {
 	  body: JSON.stringify({
 	    row: {
 		'DernierBilan': new Date(),
-		'Appreciation': turndownService.turndown(document.getElementById('text').value) //document.getElementById('eval').innerText
+		'Appreciation': turndownService.turndown(document.getElementById('text').value), //document.getElementById('eval').innerText
+		'CyclesAImprimer': cyclesAImprimer
 	    },
 	    table_name: 'Jeunes',
 	    row_id: jeune.id
@@ -448,11 +471,15 @@ async function final(response) {
 	      body: data
 	    }).then(response => response.arrayBuffer())
 	      .then(function(response) {
-		var blob = new Blob([response], {type: "application/pdf"});
+		var blob = new Blob([response], {type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
 		var objectUrl = URL.createObjectURL(blob);
-		window.open(objectUrl);
+		const downloadLink = document.createElement("a");
+		downloadLink.href = objectUrl;
+		downloadLink.download = 'suivi_competences_'+jeune.nom.replaceAll(" ","").replaceAll("-","").replace("/","")+(newDate()).toLocaleDateString().replaceAll('/','-')+'.docx';
+		downloadLink.click();
 		setInputState(true);
 		toGenerate = false;
+		document.getElementById('successResult').innerHTML = "Le rapport a été correctement généré et téléchargé !"
 	    });
 	}
     }
@@ -462,7 +489,7 @@ async function fromSend(response) {
     if (jeune != null) {
 	let updates = [];
 	for (let c=0;c<competences.length;c++) {
-	    updates.push({'row_id': competences[c].id, 'row':{'acquis': competences[c].acquis}})
+	    updates.push({'row_id': competences[c].id, 'row':{'acquis': competences[c].acquis, 'trim1': competences[c].trim1,'trim2': competences[c].trim2, 'trim3': competences[c].trim3}})
 	}
 	const options = {
 	      method: 'PUT',
