@@ -475,7 +475,7 @@ async function final(response) {
 		var objectUrl = URL.createObjectURL(blob);
 		const downloadLink = document.createElement("a");
 		downloadLink.href = objectUrl;
-		downloadLink.download = 'suivi_competences_'+jeune.nom.replaceAll(" ","").replaceAll("-","").replace("/","")+(newDate()).toLocaleDateString().replaceAll('/','-')+'.docx';
+		downloadLink.download = 'suivi_competences_'+jeune.nom.replaceAll(" ","").replaceAll("-","").replace("/","")+(new Date()).toLocaleDateString().replaceAll('/','-')+'.docx';
 		downloadLink.click();
 		setInputState(true);
 		toGenerate = false;
