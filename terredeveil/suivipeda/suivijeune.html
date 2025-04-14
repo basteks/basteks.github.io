@@ -66,7 +66,7 @@
 					</table>
 				</fieldset>
 				<fieldset>
-					<span id="dateupdatecompetences"></span><br>
+					<!--<span id="dateupdatecompetences"></span><br>-->
 					<span id="dernierbilan"></span><br><br>
 					<h3>Évaluation générale du/de la jeune</h3><br>
 					<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
@@ -79,6 +79,7 @@
 			<div style="width:100%; text-align:center;">
 				<input type="button" id="submitbutton" value="Enregistrer les acquis" onclick="send()" style="color: white; font-weight: bold;">
 				<input type="button" id="transferbutton" value="Transfert vers les années précédentes" onclick="transfert()" style="color: white; font-weight: bold;"><br>
+				Dans le rapport, afficher les compétences des cycles suivants : <input name="cycleaimprimer" type="checkbox" value="C1" onchange="toggleLabel(event)" autocomplete="off"/><label id="labelC1" for="cycleaimprimer">C1</label>&nbsp;&nbsp;&nbsp;<input name="cycleaimprimer" type="checkbox" value="C2" onchange="toggleLabel(event)" autocomplete="off"/><label id="labelC2" for="cycleaimprimer">C2</label>&nbsp;&nbsp;&nbsp;<input name="cycleaimprimer" type="checkbox" value="C3" onchange="toggleLabel(event)" autocomplete="off"/><label id="labelC3" for="cycleaimprimer">C3</label>&nbsp;&nbsp;&nbsp;<input name="cycleaimprimer" type="checkbox" value="C4" onchange="toggleLabel(event)" autocomplete="off"/><label id="labelC4" for="cycleaimprimer">C4</label><br>
 				<input type="button" id="generatebutton" value="Générer le rapport de suivi" onclick="generate()" style="color: white; font-weight: bold;">
 			</div>
 			<div id="loaderbottom" class="loader"></div>
