@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body {
+	background-color: #f5f5f5;
+	text-align: center;
+    }
+    .banner {
+	width: 800px;
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	z-index: 2;
+	height: 180px;
+	background-color: #cee4b0;
+    }
+    .banner h2 {
+	font-family: Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	padding-bottom: .8em;
+	font-size: 2.6em;
+	color: #1b5f31;
+    }
+    
+    iframe {
+	background-color: #f5f5f5;
+	width: 800px;
+	border: none;
+	position: relative;
+	z-index: 1;
+	margin-top:-80px;
+	margin-left: auto;
+	margin-right:auto;
+    }
+    
+    #evt_description {
+	width: 800px;
+	background-color: white;
+	margin-left: auto;
+	margin-right: auto;
+	display: none;
+	margin-bottom: 50px;
+	font-size: .9em;
+	padding-top: 5px;
+	position:relative;
+	z-index:2;
+    }
+</style>
+</head>
+<body onload="init()">
+<div style="width:100%;top:0px;left:0px;position: absolute;">
+    <div class="banner">
+	<img src="logo_aca.png" height="70px"><br>
+	<h2 id="bannerTitle"></h2>
+    </div>
+    <div id="evt_description"></div>
+    <iframe style="height:768px"></iframe>
+</div>
+</body>
+<script>
+    const firstFormURL = 'https://vps-25355c52.vps.ovh.net/dtable/forms/241729c4-05a8-4aad-924e-943b185a9b1e/';
+    const webhookURL = 'https://hook.eu2.make.com/wrumkhkzep4mygfqww70nwk5ikrxa3or';
+    let evtID = "";
+    let registrationURL = "";
+    let evtPresentation = "";
+    function init() {
+	let iframe = document.querySelector('iframe');
+	iframe.style.display='none';
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	if (urlParams.has('title')) {
+	    document.getElementById('bannerTitle').innerHTML = urlParams.get('title');
+	}
+	if (urlParams.has('bg')) {
+	    document.getElementsByClassName('banner')[0].style.backgroundColor = "#" + urlParams.get('bg');
+	}
+	if (urlParams.has('col')) {
+	    document.getElementById('bannerTitle').style.color = "#" + urlParams.get('col');
+	}
+	if (urlParams.has('evt')) {
+	    evtID = urlParams.get('evt');
+	}
+	var cpt=0;
+	const uuid = self.crypto.randomUUID();
+	
+	iframe.src = firstFormURL + '?prefillHide_browserID=' + uuid + '&prefillHide_evtID=' + evtID;
+	iframe.addEventListener('load', () => {
+	    cpt += 1;
+	    if (cpt == 2) { // Validating the "contact search" form
+		let data = new FormData();
+		data.append('action','registration_init');
+		data.append('browserID',uuid);
+		data.append('evtID',evtID);
+		fetch(webhookURL, {
+		  method: "POST",
+		  body: data
+		}).then(function(response) {
+		  return response.json();
+		}).then(function(data) {
+		    document.querySelector('iframe').src = data.ContactURL;
+		    registrationURL = data.RegistrationURL;
+		    evtPresentation = data.evtPresentation
+		    // eventually resize the iframe depending on your form's height 
+		    // (unfortunately you can't get directly the height so you have to hardcode this value)
+		    document.querySelector('iframe').style.height = '2450px';
+		});
+	    }
+	    if (cpt == 4) { // Validating the "contact create/update" form
+		if (evtPresentation != "") {
+		    document.getElementById('evt_description').innerHTML = evtPresentation;
+		    document.getElementById('evt_description').style.display="block";
+		}
+		document.querySelector('iframe').src = registrationURL + "&prefillHide_browserID=" + uuid;
+		document.querySelector('iframe').style.marginTop = '-130px';
+		// eventually resize the iframe depending on your form's height 
+		// (unfortunately you can't get directly the height so you have to hardcode this value)
+		document.querySelector('iframe').style.height = '1000px'; // careful, depending on the nuber of questions !!
+	    }
+	});
+	iframe.style.display='block';
+    }
+</script>
+</html>
