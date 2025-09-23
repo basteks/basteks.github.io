@@ -66,6 +66,7 @@
     const firstFormURL = 'https://cloud.seatable.io/dtable/forms/7ded1d43-de88-407d-aef6-904abe512cef/';
     const webhookURL = 'https://hook.eu2.make.com/wrumkhkzep4mygfqww70nwk5ikrxa3or';
     let evtID = "";
+	let evtName = "";
     let registrationURL = "";
     let evtPresentation = "";
     function init() {
@@ -74,7 +75,8 @@
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	if (urlParams.has('title')) {
-	    document.getElementById('bannerTitle').innerHTML = urlParams.get('title');
+		evtName = urlParams.get('title');
+	    document.getElementById('bannerTitle').innerHTML = evtName;
 	}
 	if (urlParams.has('bg')) {
 	    document.getElementsByClassName('banner')[0].style.backgroundColor = "#" + urlParams.get('bg');
@@ -86,9 +88,10 @@
 	    evtID = urlParams.get('evt');
 	}
 	var cpt=0;
-	const uuid = self.crypto.randomUUID();
+	//const uuid = self.crypto.randomUUID();
 	
-	iframe.src = firstFormURL + '?prefillHide_browserID=' + uuid + '&prefillHide_evtID=' + evtID;
+	//iframe.src = firstFormURL + '?prefillHide_browserID=' + uuid + '&prefillHide_evtID=' + evtID;
+	iframe.src = firstFormURL + '?prefillHide_evtName=' + evtName + '&prefillHide_evtID=' + evtID;
 	iframe.addEventListener('load', () => {
 	    cpt += 1;
 	    if (cpt == 2) { // Validating the "contact search" form
