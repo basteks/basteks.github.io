@@ -1,0 +1,63 @@
+body {
+    background-color: #f5f5f5;
+    text-align: center;
+}
+.banner {
+    width: 100%;
+    min-width: 817px;
+    padding-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 2;
+    height: 200px;
+    background-color: #d2e0a8;
+}
+.banner h2 {
+    font-family: Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    padding-bottom: .8em;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 2.6em;
+}
+
+iframe {
+    background-color: #f5f5f5;
+    width: 817px;
+    border: none;
+    position: relative;
+    z-index: 1;
+    margin-top: -80px;
+    margin-left: auto;
+    margin-right:auto;
+    overflow: hidden;
+    height: 950px;
+}
+
+#evt_description {
+    width: 801px;
+    min-width: 801px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+    margin-bottom: 50px;
+    font-size: .9em;
+    padding: 10px;
+    position:relative;
+    z-index:2;
+    text-align: left;
+}
+
+#header{
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}
+
+#logo {
+    height: 70px;
+}
