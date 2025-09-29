@@ -2,70 +2,9 @@
 <html lang="en">
 	<head>
 		<title>ACA Registration form</title>
-		<style>
-			body {
-			background-color: #f5f5f5;
-			text-align: center;
-			}
-			.banner {
-			width: 100%;
-			min-width: 817px;
-			padding-top: 20px;
-			margin-left: auto;
-			margin-right: auto;
-			position: relative;
-			z-index: 2;
-			height: 200px;
-			}
-			.banner h2 {
-			font-family: Segoe UI,Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
-			margin-top: 10px;
-			margin-bottom: 0px;
-			padding-bottom: .8em;
-			padding-left: 10px;
-			padding-right: 10px;
-			font-size: 2.6em;
-			}
-			
-			iframe {
-			background-color: #f5f5f5;
-			width: 817px;
-			border: none;
-			position: relative;
-			z-index: 1;
-			margin-top: -80px;
-			margin-left: auto;
-			margin-right:auto;
-			overflow: hidden;
-			height: 950px;
-			}
-			
-			#evt_description {
-			width: 801px;
-			min-width: 801px;
-			background-color: white;
-			margin-left: auto;
-			margin-right: auto;
-			display: none;
-			margin-bottom: 50px;
-			font-size: .9em;
-			padding: 10px;
-			position:relative;
-			z-index:2;
-			text-align: left;
-			}
-
-			#header{
-			width: 100%;
-			top: 0px;
-			left: 0px;
-			position: absolute;
-			}
-
-			#logo {
-			height: 70px;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="jsuites.loading.css" />
+		<link rel="stylesheet" type="text/css" href="jsuites.modal.css" />
+		<link rel="stylesheet" type="text/css" href="formstyle.css" />
 		<script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
 	</head>
 	<body onload="init()">
@@ -75,12 +14,15 @@
 		<h2 id="bannerTitle">ACA Event Sign-up Form</h2>
 		</div>
 		<div id="evt_description"></div>
+		<div id="loader"></div>
 		<iframe title="Sign-up form"></iframe>
 	</div>
+	<script src="jsuites.loading-modal.js"></script>
 	<script>
 		const firstFormURL = 'https://cloud.seatable.io/dtable/forms/7ded1d43-de88-407d-aef6-904abe512cef/';
 		const webhookURL = 'https://hook.eu2.make.com/g5onnawfymkb1tedu10g44y9ffwpn6gh';
 		var converter = new showdown.Converter();
+		jSuites.loading.show();
 		let evtID,
 			queryID,
 			evtName ,
@@ -114,6 +56,7 @@
 			if (step==1 && evtID != "") {
 				iframe.src = firstFormURL + '?prefillHide_evtName=' + evtName + '&prefillHide_evtshortID=' + evtID;
 				iframe.style.display='block';
+				jSuites.loading.hide();
 			} else if (step==2 && queryID != "") {
 				let cpt = 0;
 				console.log("send request");
@@ -126,7 +69,6 @@
 				}).then(function(response) {
 				return response.json();
 				}).then(function(data) {
-					console.log(data);
 					registrationURL = data.registrationURL;
 					evtPresentation = converter.makeHtml(data.evtPresentation);
 					console.log(registrationURL);
@@ -145,10 +87,12 @@
 								// eventually resize the iframe depending on your form's height 
 								// (unfortunately you can't get directly the height so you have to hardcode this value)
 								document.querySelector('iframe').style.height = '1000px'; // careful, depending on the number of questions !!
+								jSuites.loading.hide();
 							}
 						});
-						iframe.style.height = '2450px';
+						iframe.style.height = '3000px';
 						iframe.style.display='block';
+						jSuites.loading.hide();
 						//document.querySelector('iframe').style.height = '2450px';
 					}
 				});
