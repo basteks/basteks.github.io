@@ -21,7 +21,6 @@
 		const firstFormURL = 'https://cloud.seatable.io/dtable/forms/9cda4665-8ee5-41eb-bb10-8132d62aa1e7/';
 		const webhookURL = 'https://hook.eu2.make.com/g5onnawfymkb1tedu10g44y9ffwpn6gh';
 		var converter = new showdown.Converter();
-		jSuites.loading.show();
 		let evtID,
 			queryID,
 			evtName ,
@@ -29,6 +28,7 @@
 			contactInfos,
 			evtPresentation = "";
 		function init() {
+			jSuites.loading.show();
 			let iframe = document.querySelector('iframe');
 			iframe.style.display='none';
 			const queryString = window.location.search;
